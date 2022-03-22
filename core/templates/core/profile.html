@@ -1,0 +1,71 @@
+{% extends 'core/base.html' %}
+{% block titlename %}<Title>Your Profile</Title>{% endblock titlename %}
+<body>
+    {% block content %}
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">My Blogs</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link " aria-current="page" target="__blank" href="{% url 'home' %}">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" href="#">Dashboard</a>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Categories
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <li><a class="dropdown-item" href="{% url 'table' %}">Mental Health</a></li>
+                  <li><a class="dropdown-item" href="{% url 'table2' %}">Covid 19</a></li>
+                  <li><a class="dropdown-item" href="{% url 'table3' %}">Immune System</a></li>
+                  <li><a class="dropdown-item" href="{% url 'table4' %}">Heart Disease</a></li>
+                 
+                 
+                </ul>
+              </li>
+              <li class="nav-item">
+                <a href="{% url 'logout' %}" class="nav-link btn btn-danger  mx-2"> Logout</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+      <h5 class="alert alert-success "  role="alert">Welcome {{user.first_name}} {{user.last_name}} !</h5>       
+  <div class="container-fluid p-4 ">
+        {% if messages %}
+                {% for message in messages  %}
+                <p style="" {% if message.tags %} class='{{ message.tags}}' {% endif %}>{{message}}</p>
+                {% endfor %}
+        {% endif %}
+
+      <div class="row">
+            <div class="col-sm-3 ">
+              <div class="border-right border-warning h-100 " >
+                <img src="{{detail.profile_image.url}}" alt="" , width="200px" height="200px" class="img-thumbnail img-responsive-fluid  mt-4">
+                <h5 class="">Dr. {{user.first_name}} {{user.last_name}}</h5>
+                <h5 class="">Profile : {{detail.user_type}} </h5>  
+                <h5>Email Id : {{user.email}}</h5> 
+                <h5>Address: {{detail.locality}} {{detail.city}}({{detail.pin}}),{{detail.state}}</h5>    
+              </div>   
+                
+                 <hr class='border-light' /> 
+            </div>   
+            <div class="col-sm-8 offset-1">
+              <h2 class="alert-info text-center mb-3 p-2" >Latest Health updates</h2>
+              <form action="{% url 'add' %}" method='POST' enctype="multipart/form-data" class='shadow p-5' novalidate >
+                {% csrf_token %}
+                  {{pform.as_p}}
+                  <button type="submit" class="btn btn-warning" name='mybtn'>Add Post</button>
+              </form>
+            </div>
+        </div>  
+  </div>     
+    {% endblock content %}
+
